@@ -1,5 +1,5 @@
 # Hangman-Game
 A prolog implementation of the **Hangman Game**
 #
-*Remedi Tommaso*
+*Remedi Tommaso*  
 *Monaco Riccardo*
