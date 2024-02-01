@@ -13,6 +13,7 @@ selezionaParolaSegreta(Parola) :-
     random(0, Lunghezza, Indice),
     nth0(Indice, ListaParole, ParolaAtomizzata),
     atom_chars(ParolaAtomizzata, Parola).
+    aaaaaaaaaa
 
 /* Predicato per la preparazione dell'ambiente di gioco, dove viene dato il benvenuto, disegnato il patibolo vuoto e selezionata casualmente la parola da indovinare */
 preparazioneAmbienteDiGioco(TentativiRimanenti) :-
