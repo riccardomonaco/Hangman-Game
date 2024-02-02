@@ -1,130 +1,146 @@
-/* Lista di parole segrete*/
-paroleSegrete(['haskell', 'programmazione', 'funzionale', 'linguaggio', 'computazione']).
+/* Prolog program to play the hangman game */
 
+main :- env_setup(6).
 
-/*Predicato main del gioco che instanzia l 'ambiente di gioco*/
-main :-
-    preparazioneAmbienteDiGioco(6).
+/* Words to guess list */
 
-/*Predicato per selezionare casualmente una parola segreta dalla lista di paroleSegrete*/
-selezionaParolaSegreta(Parola) :-
-    paroleSegrete(ListaParole),
-    length(ListaParole, Lunghezza),
-    random(0, Lunghezza, Indice),
-    nth0(Indice, ListaParole, ParolaAtomizzata),
-    atom_chars(ParolaAtomizzata, Parola).
-    aaaaaaaaaa
+words_list(['haskell', 'programmazione', 'funzionale', 'linguaggio', 'computazione']).
 
-/* Predicato per la preparazione dell'ambiente di gioco, dove viene dato il benvenuto, disegnato il patibolo vuoto e selezionata casualmente la parola da indovinare */
-preparazioneAmbienteDiGioco(TentativiRimanenti) :-
-    pulisciConsole,
-    write('Benvenuto nel gioco dell Impiccato!'), nl,
-    selezionaParolaSegreta(ParolaSegreta),
-    gioca(ParolaSegreta, [], TentativiRimanenti).
+/* The predicate sel_world randomly selects a word from the given list */
 
-/*Preicato che gestisce la fase di gioco */
-gioca(ParolaSegreta, TentativoAttuale, TentativiRimanenti) :-
-    (   TentativiRimanenti =:= 0 ->
-        pulisciConsole,
-        disegnaPatibolo(0),
-        write('Hai perso! Il tuo omino è stato impiccato.'), nl,
-        write('La parola segreta era: '),write_list(ParolaSegreta), nl
-    ;   parolaIndovinata(ParolaSegreta, TentativoAttuale) ->
-        pulisciConsole,
-        visualizzaParola(ParolaSegreta, TentativoAttuale), nl,
-        write('Hai vinto! La parola segreta era: '), stampa_lista(ParolaSegreta), nl
-    ;   pulisciConsole,
-        write('Parola attuale:'), nl,
-        visualizzaParola(ParolaSegreta, TentativoAttuale), nl, nl,
-        disegnaPatibolo(TentativiRimanenti),
-        write('Tentativi rimanenti: '), write(TentativiRimanenti), nl, nl,
-        write('Indovina una lettera: '), nl,
-        get_char(Lettera),
+sel_word(Word) :- words_list(Words_List),
+                  length(Words_List, List_Length),
+                  random(0, List_Length, Word_Index),
+                  nth0(Word_Index, Words_List, Atomic_Word),
+                  atom_chars(Atomic_Word, Word).
+
+/* The predicate env_setup sets the game environment 
+   - Welcomes the player
+   - Draws the hangman
+   - Selects the word to guess
+   - Calls the play predicate to begin the game */
+
+env_setup(Remaining_Attemps) :- clean_console,
+                                write('Welcome to the Hangman Game!'), nl,
+                                sel_word(Word_To_Guess),
+                                play(Word_To_Guess, [], Remaining_Attemps).
+
+/* The predicate play manages the game, it updates the guessed letters and the attempts 
+   - The first parameter stands for the word to guess
+   - The second parameter stands for the actual Letters guessed 
+   - The third parameter stands for the remaining attempts */
+
+play(Word_To_Guess, Actual_Attempt, Remaining_Attemps) :-
+    (   Remaining_Attemps =:= 0 ->
+        clean_console,
+        draw_hangman(0),
+        write('You\'ve Lost!'), nl,
+        write('The secret word was: '),write_list(Word_To_Guess), nl
+        ;   
+        check_guessed(Word_To_Guess, Actual_Attempt) ->
+        clean_console,
+        render_word(Word_To_Guess, Actual_Attempt), nl,
+        write('You\'ve won! The secret word was: '), print_list(Word_To_Guess), nl
+        ;   
+        clean_console,
+        write('Actual word:'), nl,
+        render_word(Word_To_Guess, Actual_Attempt), nl, nl,
+        draw_hangman(Remaining_Attemps),
+        write('Remaining attempts: '), write(Remaining_Attemps), nl, nl,
+        write('Guess a Letter: '), nl,
+        get_char(Letter),
         get_char(_),
-        aggiornaTentativo(ParolaSegreta, TentativoAttuale, Lettera, NuovoTentativo),
+        upd_attempt(Word_To_Guess, Actual_Attempt, Letter, New_Attempt),
         (
-            memberchk(Lettera, ParolaSegreta) ->
-            gioca(ParolaSegreta, NuovoTentativo, TentativiRimanenti)
+            memberchk(Letter, Word_To_Guess) ->
+            play(Word_To_Guess, New_Attempt, Remaining_Attemps)
             ;
-            NuoviTentativi is TentativiRimanenti - 1,
-            gioca(ParolaSegreta, NuovoTentativo, NuoviTentativi)
+            New_Attempts is Remaining_Attemps - 1,
+            play(Word_To_Guess, New_Attempt, New_Attempts)
         )
     ).
 
-
-/*Aggiorna la lista di lettere indovinate attualmente con una nuova lettera inserita dall'utente */
-aggiornaTentativo(ParolaSegreta, TentativoAttuale, Lettera, NuovoTentativo) :-
-    (   memberchk(Lettera, TentativoAttuale) ->
-        /*La lettera è già stata indovinata, non fare nulla*/
-        write('Lettera già inserita'), nl,
-        NuovoTentativo = TentativoAttuale
-    ;   memberchk(Lettera, ParolaSegreta) ->
-        /* La lettera è corretta, aggiorna il tentativo*/
-        write('Lettera presente nella parola'), nl,
-        append(TentativoAttuale, [Lettera], TempTentativo),
-        sort(TempTentativo, NuovoTentativo)
-    ;   % La lettera è sbagliata, non aggiungerla alla lista di lettere corrette
-        NuovoTentativo = TentativoAttuale
+/* The predicate upd_attempt updates the guessed Letters list with eventually a new one 
+   - The first parameter stands for the word to guess
+   - The second parameter stands for the actual Letters guessed
+   - The third parameter stands for the eventual new attempt */
+   
+upd_attempt(Word_To_Guess, Actual_Attempt, Letter, New_Attempt) :-
+    (   memberchk(Letter, Actual_Attempt) ->
+        write('Already guessed letter'), nl,
+        New_Attempt = Actual_Attempt
+        ;   
+        memberchk(Letter, Word_To_Guess) ->
+        write('Letter is in the word!'), nl,
+        append(Actual_Attempt, [Letter], Temp_Attempt),
+        sort(Temp_Attempt, New_Attempt)
+        ;  
+        New_Attempt = Actual_Attempt
     ).
 
-/*Cicla ricorsivamente la parola che gli viene passata e controlla se nella lista tentativo il carattere è presente, se lo è lo stampa, altrimenti stampa un _ */
-visualizzaParola([], _).
-visualizzaParola([C|Resto], Tentativo) :-
-    (   memberchk(C, Tentativo) ->
+/* The predicate render_word prints a letter if it is found in the word, a "_" if not */
+
+render_word([], _).
+render_word([C|Rest], Attempt) :-
+    (   memberchk(C, Attempt) ->
         write(C), write(' ')
-    ;   write('_ ')
+        ;   
+        write('_ ')
     ),
-    visualizzaParola(Resto, Tentativo).
+    render_word(Rest, Attempt).
 
-/*Funzione che restituisce true quando produce una lista vuota, cioè quando tutte le lettere sono state indovinate*/
-parolaIndovinata(ParolaSegreta, Tentativo) :-
-    subtract(ParolaSegreta, Tentativo, []).
+/* The predicate check_guessed returns true if all the letters have been guessed */
 
-/* Predicato per disegnare il patibolo e l' omino */
-disegnaPatibolo(TentativiRimanenti) :-
+check_guessed(Word_To_Guess, Attempt) :-
+    subtract(Word_To_Guess, Attempt, []).
+
+/* The predicate draw_hangman prints the characters to draw the countours of the hangman */
+
+draw_hangman(Remaining_Attemps) :-
     write('  +---+'), nl,
     write('  |   |'), nl,
-    caso(TentativiRimanenti),
+    draw_case(Remaining_Attemps),
     write('========='), nl.
 
-/* Predicato ausiliario per gestire i casi del patibolo */
-caso(6) :-
+/* The auxiliary predicate draw_case draws the specifica "state" of the hangman */
+
+draw_case(6) :-
     write('      |'), nl,
     write('      |'), nl,
     write('      |'), nl.
-caso(5) :-
+draw_case(5) :-
     write('  O   |'), nl,
     write('      |'), nl,
     write('      |'), nl.
-caso(4) :-
+draw_case(4) :-
     write('  O   |'), nl,
     write('  |   |'), nl,
     write('      |'), nl.
-caso(3) :-
+draw_case(3) :-
     write('  O   |'), nl,
     write(' /|   |'), nl,
     write('      |'), nl.
-caso(2) :-
+draw_case(2) :-
     write('  O   |'), nl,
     write(' /|\\  |'), nl,
     write('      |'), nl.
-caso(1) :-
+draw_case(1) :-
     write('  O   |'), nl,
     write(' /|\\  |'), nl,
     write(' /    |'), nl.
-caso(0) :-
+draw_case(0) :-
     write('  O   |'), nl,
     write(' /|\\  |'), nl,
     write(' / \\  |'), nl.
-caso(_).
+draw_case(_).
 
-/* Predicato per pulire la console */
-pulisciConsole :-
+/* The predicate clean_console  */
+clean_console :-
     nl.
 
 /* Predicato per stampare in maniera più bella ed organizzata una lista */
-stampa_lista([]).
-stampa_lista([X|Xs]) :-
+print_list([]).
+print_list([X|Xs]) :-
     write(X),
-    stampa_lista(Xs).
+    print_list(Xs).
 
