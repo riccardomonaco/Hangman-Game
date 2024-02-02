@@ -66,7 +66,6 @@ play(Word_To_Guess, Guessed_Letters, Remaining_Attemps) :-
    - The fourth parameter stands for the remaining attempts */
 
 upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) :-
-    nl,
     write('____________________________________'), nl, nl,
     memberchk(Inserted_Letter, Guessed_Letters) ->
            write('Already guessed letter'), nl,
