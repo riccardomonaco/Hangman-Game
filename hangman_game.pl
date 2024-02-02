@@ -76,7 +76,8 @@ upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) 
            write('Letter is in the word!'), nl,
            append(Guessed_Letters, [Inserted_Letter], Upd_Guessed_Letters),
            play(Word_To_Guess, Upd_Guessed_Letters, Remaining_Attemps)
-    ;   
+    ;
+    write('Wrong letter!'), nl,
     Upd_Remaining_Attempts is Remaining_Attemps - 1,
     play(Word_To_Guess, Guessed_Letters, Upd_Remaining_Attempts).
 
