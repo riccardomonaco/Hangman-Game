@@ -146,7 +146,7 @@ draw_case(_).
 clean_console :-
     nl.
 
-/* The print_list predicate pretty prints a list 
+/* The predicate print_list pretty prints a list 
    - The first parameter stands for the list to print */
 
 print_list([]).
