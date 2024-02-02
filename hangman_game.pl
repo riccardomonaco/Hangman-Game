@@ -1,7 +1,7 @@
 /* Logical and Functional Programming Project a.y. 2023/24
    Lecturer: Prof. Marco Bernardo
    Students: 
-            Tommaso Remedi - 300535 
+            Tommaso Remedi  - 300535 
             Riccardo Monaco - 300537 */
 
 /* Prolog program to play the hangman game */
@@ -66,7 +66,7 @@ play(Word_To_Guess, Guessed_Letters, Remaining_Attemps) :-
    - The fourth parameter stands for the remaining attempts */
 
 upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) :-
-    nl, nl,
+    nl,
     write('____________________________________'), nl, nl,
     memberchk(Inserted_Letter, Guessed_Letters) ->
            write('Already guessed letter'), nl,
