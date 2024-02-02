@@ -1,6 +1,6 @@
-/* Progetto di Programmazione Logica e Funzionale a.a. 2023-2024.
-   Docente: Prof. Marco Bernardo
-   Studenti: 
+/* Logical and Functional Programming Project a.y. 2023/24
+   Lecturer: Prof. Marco Bernardo
+   Students: 
             Tommaso Remedi - 300535 
             Riccardo Monaco - 300537 */
 
