@@ -86,10 +86,12 @@ upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) 
 
 render_word([], _).
 render_word([C|Word_To_Guess], Guessed_Letters) :-
-    memberchk(C, Guessed_Letters) ->
+    (
+        memberchk(C, Guessed_Letters) ->
         write(C), write(' ')
-    ;   
-    write('_ '),
+        ;   
+        write('_ ')
+    ),
     render_word(Word_To_Guess, Guessed_Letters).
 
 /* The predicate check_guessed returns true if all the letters have been guessed 
