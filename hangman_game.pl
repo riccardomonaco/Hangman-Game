@@ -50,7 +50,6 @@ play(Word_To_Guess, Guessed_Letters, Remaining_Attemps) :-
     write('You\'ve won! The secret word was: '), print_list(Word_To_Guess), nl
     ;   
     clean_console,
-    write('Word attuale:'), nl,
     write('Actual word:'), nl,
     render_word(Word_To_Guess, Guessed_Letters), nl, nl,
     draw_hangman(Remaining_Attemps),
@@ -67,6 +66,8 @@ play(Word_To_Guess, Guessed_Letters, Remaining_Attemps) :-
    - The fourth parameter stands for the remaining attempts */
 
 upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) :-
+    nl,nl,
+    write('____________________________________'), nl,
     memberchk(Inserted_Letter, Guessed_Letters) ->
            write('Already guessed letter'), nl,
            play(Word_To_Guess, Guessed_Letters, Remaining_Attemps)                 
