@@ -8,6 +8,7 @@
 
 import System.Random -- needed to randomly extract a number as the index of the word to guess
 import Data.List -- needed to use nub, which removes duplicate items from a list
+import System.Console.ANSI -- needed to clean the console
 import System.IO -- needed to acquire the user input 
 
 main :: IO ()
@@ -29,6 +30,7 @@ envSetup = do
     play wordToGuess [] remainingAttempts
 
 {- The function selectWord randomly selects a word from the given list: -}
+
 selectWord :: IO String
 selectWord = do
     index <- randomRIO (0, length wordsToGuess - 1)
@@ -74,7 +76,7 @@ handleInProgress wordToGuess guessedLetters remainingAttempts = do
     putStrLn $ "Current word: " ++ renderWord wordToGuess guessedLetters
     putStr (drawHangman remainingAttempts)
     putStrLn $ "Remaining attempts: " ++ show remainingAttempts
-    letter <- readFirstChar
+    insertedLetter <- readFirstChar
     updateAttempt wordToGuess guessedLetters insertedLetter remainingAttempts
 
 {- The function readFirstChar reads and checks the validity of the input:
@@ -99,7 +101,7 @@ readFirstChar = do
    - The fourth parameter stands for the remaining attempts. -}
 
 updateAttempt :: String -> String -> Char -> Int -> IO ()
-updateAttempt wordToGuess guessedLetters letter remainingAttempts
+updateAttempt wordToGuess guessedLetters insertedLetter remainingAttempts
     | insertedLetter `elem` wordToGuess = play wordToGuess (nub $ guessedLetters ++ [insertedLetter]) remainingAttempts
     | otherwise = play wordToGuess guessedLetters (remainingAttempts - 1)
 
