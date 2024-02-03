@@ -17,7 +17,7 @@ main = envSetup 6
 {- Words to guess list. -}
 
 wordsToGuess :: [String]
-wordsToGuess = ["haskell", "programmazione", "funzionale", "linguaggio", "computazione"]
+wordsToGuess = ["haskell", "programming", "functional", "language", "computation"]
 
 {- The function envSetup sets the game environment, picking the word to guess. -}
 
