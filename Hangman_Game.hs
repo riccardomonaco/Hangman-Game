@@ -36,7 +36,7 @@ selectWord = do
     index <- randomRIO (0, length wordsToGuess - 1)
     return $ wordsToGuess !! index
 
-{- The function play manages the game, it updates the guessed letters and the attempts:
+{- The function play manages the game, updates the guessed letters and the attempts:
    - The first parameter stands for the word to guess;
    - The second parameter stands for the letters already guessed;
    - The third parameter stands for the remaining attempts. -}
