@@ -21,8 +21,8 @@ wordsToGuess = ["haskell", "programmazione", "funzionale", "linguaggio", "comput
 
 {- The function envSetup sets the game environment, picking the word to guess. -}
 
-envSetup :: IO ()
-envSetup = do
+envSetup :: Int -> IO ()
+envSetup remainingAttempts = do
     clearScreen
     putStrLn "Welcome to the Hangman Game!"
     putStrLn $ "Initial state: \n" ++ drawHangman 0
