@@ -1,5 +1,3 @@
 # Hangman-Game
-A prolog implementation of the **Hangman Game**
-#
-*Remedi Tommaso*  
-*Monaco Riccardo*
+A **Prolog** and **Haskell** implementation of the **Hangman Game**
+Developed by *Remedi Tommaso* and *Monaco Riccardo*
