@@ -60,7 +60,6 @@ handle_loss(Word_To_Guess) :-
 
 handle_win(Word_To_Guess) :-
     clean_console,
-    render_word(Word_To_Guess, Guessed_Letters), nl,
     write('You\'ve won! The secret word was: '), print_list(Word_To_Guess), nl.
 
 /* The predicate handle_in_progress handles the in-progress scenario:
@@ -90,10 +89,10 @@ read_first_char(First_Char) :-
             read_remaining_chars(First_Code, Remaining_Codes) 
         ;
             write('Please, enter a lowercase letter.'), nl,
-            read_remaining_chars(FirstCode, Remaining_Codes),
+            read_remaining_chars(First_Code, Remaining_Codes),
             clean_console,
             write('Guess a Letter: '), nl,
-            read_first_char(Inserted_Letter)
+            read_first_char(First_Char)
     ).
 
 
@@ -102,7 +101,7 @@ read_first_char(First_Char) :-
    - The second parameters stands for the eventual other codes inserted. */
 
 read_remaining_chars(10, []) :- !.  
-read_remaining_chars(First_Code, [Code | Remaining_Codes]) :-
+read_remaining_chars(Code, [Code | Remaining_Codes]) :-
     get_code(New_Code),
     read_remaining_chars(New_Code, Remaining_Codes).
 
