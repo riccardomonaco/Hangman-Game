@@ -8,7 +8,6 @@
 
 import System.Random -- needed to randomly extract a number as the index of the word to guess
 import Data.List -- needed to use nub, which removes duplicate items from a list
-import System.Console.ANSI -- needed to clean the console
 import System.IO -- needed to acquire the user input 
 
 main :: IO ()
@@ -23,9 +22,7 @@ wordsToGuess = ["haskell", "programming", "functional", "language", "computation
 
 envSetup :: Int -> IO ()
 envSetup remainingAttempts = do
-    clearScreen
     putStrLn "Welcome to the Hangman Game!"
-    putStrLn $ "Initial state: \n" ++ drawHangman 0
     wordToGuess <- selectWord
     play wordToGuess [] remainingAttempts
 
@@ -52,7 +49,7 @@ play wordToGuess guessedLetters remainingAttempts
 
 handleLoss :: String -> IO ()
 handleLoss wordToGuess = do
-    clearScreen
+    
     putStr (drawHangman 0)
     putStrLn "You've Lost! Your hangman has been hanged."
     putStrLn $ "The secret word was: " ++ wordToGuess
@@ -62,7 +59,6 @@ handleLoss wordToGuess = do
 
 handleWin :: String -> IO ()
 handleWin wordToGuess = do
-    clearScreen
     putStrLn $ "You've guessed it! The secret word was: " ++ wordToGuess
 
 {- The function handleInProgress handles the in-progress scenario:
@@ -72,7 +68,6 @@ handleWin wordToGuess = do
 
 handleInProgress :: String -> String -> Int -> IO ()
 handleInProgress wordToGuess guessedLetters remainingAttempts = do
-    clearScreen
     putStrLn $ "Current word: " ++ renderWord wordToGuess guessedLetters
     putStr (drawHangman remainingAttempts)
     putStrLn $ "Remaining attempts: " ++ show remainingAttempts
@@ -102,8 +97,16 @@ readFirstChar = do
 
 updateAttempt :: String -> String -> Char -> Int -> IO ()
 updateAttempt wordToGuess guessedLetters insertedLetter remainingAttempts
-    | insertedLetter `elem` wordToGuess = play wordToGuess (nub $ guessedLetters ++ [insertedLetter]) remainingAttempts
-    | otherwise = play wordToGuess guessedLetters (remainingAttempts - 1)
+    | insertedLetter `elem` guessedLetters = do
+        putStrLn "You've already guessed this letter!"
+        play wordToGuess guessedLetters remainingAttempts
+    | insertedLetter `elem` wordToGuess = do
+        putStrLn "Letter is in the word!"
+        play wordToGuess (nub $ guessedLetters ++ [insertedLetter]) remainingAttempts
+    | otherwise = do
+        putStrLn "Wrong letter!"
+        play wordToGuess guessedLetters (remainingAttempts - 1)
+
 
 {- The function checkGuessed returns true if all the letters have been guessed:
    - The first parameter stands for the word to guess;
@@ -142,4 +145,3 @@ drawHangman remainingAttempts =
         drawCase 1 = ["  O   |", " /|\\  |", " /    |"]
         drawCase 0 = ["  O   |", " /|\\  |", " / \\  |"]
         drawCase _ = []
-
