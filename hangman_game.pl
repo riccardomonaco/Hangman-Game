@@ -92,7 +92,7 @@ read_first_char(First_Char) :-
             read_remaining_chars(First_Code, Remaining_Codes),
             clean_console,
             write('Guess a Letter: '), nl,
-            read_first_char(First_Char)
+            read_first_char(_)
     ).
 
 
