@@ -18,7 +18,8 @@ main = envSetup 6
 wordsToGuess :: [String]
 wordsToGuess = ["haskell", "programming", "functional", "language", "computation"]
 
-{- The function envSetup sets the game environment, picking the word to guess. -}
+{- The function envSetup sets the game environment, picking the word to guess:
+   - The first parameter stands for the remaining attempts. -}
 
 envSetup :: Int -> IO ()
 envSetup remainingAttempts = do
