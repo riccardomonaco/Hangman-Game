@@ -52,8 +52,6 @@ QUALITÀ DEL SOFTWARE:
 - LEGGIBILE (coerenza stilistica)?
    --------------------------------
 
-   Di alcune funzioni/predicati non ci sono commenti sui relativi argomenti [-1].
-
 
 - ARTICOLATO (ripetizioni di codice)?
    -----------------------------------
