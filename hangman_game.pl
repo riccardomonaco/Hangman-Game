@@ -69,7 +69,7 @@ handle_win(Word_To_Guess) :-
 
 handle_in_progress(Word_To_Guess, Guessed_Letters, Remaining_Attemps) :-
     clean_console,
-    write('Actual word:'), nl,
+    write('Current word:'), nl,
     render_word(Word_To_Guess, Guessed_Letters), nl, nl,
     draw_hangman(Remaining_Attemps),
     write('Remaining attempts: '), write(Remaining_Attemps), nl, nl,
@@ -119,7 +119,7 @@ upd_attempt(Word_To_Guess, Guessed_Letters, Inserted_Letter, Remaining_Attemps) 
            play(Word_To_Guess, Guessed_Letters, Remaining_Attemps)                 
     ;   
     memberchk(Inserted_Letter, Word_To_Guess) ->
-           write('Letter is in the word!'), nl,
+           write('The letter is in the word!'), nl,
            append(Guessed_Letters, [Inserted_Letter], Upd_Guessed_Letters),
            play(Word_To_Guess, Upd_Guessed_Letters, Remaining_Attemps)
     ;

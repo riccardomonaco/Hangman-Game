@@ -102,7 +102,7 @@ updateAttempt wordToGuess guessedLetters insertedLetter remainingAttempts
         putStrLn "You've already guessed this letter!"
         play wordToGuess guessedLetters remainingAttempts
     | insertedLetter `elem` wordToGuess = do
-        putStrLn "Letter is in the word!"
+        putStrLn "The letter is in the word!"
         play wordToGuess (nub $ guessedLetters ++ [insertedLetter]) remainingAttempts
     | otherwise = do
         putStrLn "Wrong letter!"
