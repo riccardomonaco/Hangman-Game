@@ -90,12 +90,6 @@ QUALITÀ DEL SOFTWARE:
 
    Perché non posso introdurre io da tastiera le parole che un altro dovrà indovinare? [-2].
 
-   Usando _ invece di - o * non si riesce a capire quanto sia lunga la parola in Haskell [-1].
-
-   Letter is in the word! --> The letter is in the word! [-1].
-
-   Actual word: --> Current word: [-1].
-
 
 TESTING DEL PROGRAMMA:
 ----------------------
