@@ -136,7 +136,7 @@ render_word([], _).
 render_word([C|Word_To_Guess], Guessed_Letters) :-
     (
         memberchk(C, Guessed_Letters) ->
-        write(C), write(' ')
+        write(C)
         ;   
         write('-')
     ),
