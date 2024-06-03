@@ -124,7 +124,7 @@ checkGuessed wordToGuess guessedLetters =
 
 renderWord :: String -> String -> String
 renderWord wordToGuess guessedLetters =
-    [if c `elem` guessedLetters || c == ' ' then c else '_' | c <- wordToGuess]
+    [if c `elem` guessedLetters || c == ' ' then c else '-' | c <- wordToGuess]
 
 {- The function drawHangman prints the characters to draw the countours of the hangman:
    - The first parameter stands for the remaining attempts. -}
@@ -146,3 +146,4 @@ drawHangman remainingAttempts =
         drawCase 1 = ["  O   |", " /|\\  |", " /    |"]
         drawCase 0 = ["  O   |", " /|\\  |", " / \\  |"]
         drawCase _ = []
+
