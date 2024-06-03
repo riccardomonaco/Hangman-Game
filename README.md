@@ -17,10 +17,6 @@ OK.
 SPECIFICA DEL PROBLEMA:
 -----------------------
 
-Specifica incompleta: non si capisce chi scelga la parola da indovinare,
-quali vincoli ci siano sulla parola (ad esempio solo lettere minuscole)
-e quanti siano i tentativi a disposizione [-3].
-
 
 ANALISI DEL PROBLEMA:
 ---------------------
